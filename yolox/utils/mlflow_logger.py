@@ -13,7 +13,10 @@ For changing default logging Behaviour you can change mlflow environment variabl
 For more information, please refer to:
 https://mlflow.org/docs/latest/introduction/index.html
 """
-import importlib.metadata
+try:
+    import importlib.metadata  # noqa: F401
+except ImportError:
+    import importlib_metadata  # noqa: F401
 import importlib.util
 import json
 import os
