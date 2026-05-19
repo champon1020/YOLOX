@@ -50,7 +50,8 @@ class MosaicDetection(Dataset):
             img_size (tuple):
             mosaic (bool): enable mosaic augmentation or not.
             preproc (func):
-            degrees (float):
+            degrees (float or sequence): rotation config for random_affine.
+                See ``yolox.data.data_augment.sample_rotation_angle``.
             translate (float):
             mosaic_scale (tuple):
             mixup_scale (tuple):

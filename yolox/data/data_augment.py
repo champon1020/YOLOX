@@ -43,6 +43,31 @@ def get_aug_params(value, center=0):
         )
 
 
+def sample_rotation_angle(degrees):
+    """
+    Sample a rotation angle (degrees) for mosaic affine augmentation.
+
+    Supported ``degrees`` formats:
+      - float/int ``d``: uniform in ``[-d, d]`` (legacy YOLOX behavior)
+      - sequence ``(low, high)``: uniform in ``[low, high]``
+      - sequence of ranges ``[(low, high), ...]``: pick one range uniformly,
+        then sample uniformly within it (e.g. small jitter + ~±90° buckets)
+    """
+    if isinstance(degrees, (int, float)):
+        return get_aug_params(float(degrees))
+
+    degrees = list(degrees)
+    if len(degrees) == 2 and isinstance(degrees[0], (int, float)):
+        return get_aug_params(degrees)
+
+    angle_range = random.choice(degrees)
+    if len(angle_range) != 2:
+        raise ValueError(
+            "Each rotation range must be (low, high), got {}".format(angle_range)
+        )
+    return random.uniform(angle_range[0], angle_range[1])
+
+
 def get_affine_matrix(
     target_size,
     degrees=10,
@@ -53,7 +78,7 @@ def get_affine_matrix(
     twidth, theight = target_size
 
     # Rotation and Scale
-    angle = get_aug_params(degrees)
+    angle = sample_rotation_angle(degrees)
     scale = get_aug_params(scales, center=1.0)
 
     if scale <= 0.0:

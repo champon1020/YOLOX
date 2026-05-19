@@ -55,8 +55,16 @@ class Exp(BaseExp):
         self.hsv_prob = 1.0
         # prob of applying flip aug
         self.flip_prob = 0.5
-        # rotation angle range, for example, if set to 2, the true range is (-2, 2)
-        self.degrees = 10.0
+        # Rotation for mosaic affine aug. Supported formats:
+        #   float d        -> uniform in [-d, d]
+        #   (low, high)    -> uniform in [low, high]
+        #   [(l,h), ...]   -> pick one range, then uniform in [l, h]
+        # Small jitter plus ~±90° buckets for inputs that may already be rotated.
+        self.degrees = [
+            (-10.0, 10.0),
+            (-100.0, -80.0),
+            (80.0, 100.0),
+        ]
         # translate range, for example, if set to 0.1, the true range is (-0.1, 0.1)
         self.translate = 0.1
         self.mosaic_scale = (0.1, 2)
