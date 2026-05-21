@@ -17,4 +17,6 @@ importlib-metadata<5.0; python_version < "3.8"
 # pycocotools corresponds to https://github.com/ppwwyyxx/cocoapi
 pycocotools>=2.0.2
 onnx>=1.13.0
-onnx-simplifier==0.4.10
+#onnx-simplifier>=0.4.10
+onnx-simplifier>=0.5.0
+onnxscript==0.7.0
